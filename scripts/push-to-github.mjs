@@ -90,9 +90,51 @@ async function collectFiles(relative = "") {
   return files;
 }
 
+// Asks GitHub directly what the token can do, instead of guessing from a 403.
+async function checkToken() {
+  const token = await promptHidden("Token GitHub (saisie masquée) : ");
+  const slug = url
+    .replace(/^https:\/\/github\.com\//, "")
+    .replace(/\.git$/, "");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    Accept: "application/vnd.github+json",
+    "User-Agent": "1000qbm-plus",
+  };
+
+  const me = await fetch("https://api.github.com/user", { headers });
+  if (me.ok) {
+    console.log(`Compte reconnu : ${(await me.json()).login}`);
+  } else {
+    console.log(`/user → ${me.status} ${(await me.text()).slice(0, 200)}`);
+  }
+
+  const repo = await fetch(`https://api.github.com/repos/${slug}`, { headers });
+  if (repo.ok) {
+    const data = await repo.json();
+    console.log(`Dépôt visible : ${data.full_name}`);
+    console.log(
+      data.permissions?.push
+        ? "Écriture autorisée : le push devrait passer."
+        : "Écriture refusée : le token n'a pas Contents = Read and write.",
+    );
+  } else {
+    console.log(`/repos/${slug} → ${repo.status}`);
+    console.log((await repo.text()).slice(0, 300));
+    console.log(
+      "Dépôt invisible pour ce token : Repository access ne l'inclut pas.",
+    );
+  }
+}
+
 async function main() {
   if (!fs.existsSync(path.join(dir, "package.json"))) {
     throw new Error("Lancez ce script depuis la racine du projet.");
+  }
+
+  if (args.includes("--check")) {
+    await checkToken();
+    return;
   }
 
   if (!fs.existsSync(path.join(dir, ".git"))) {
