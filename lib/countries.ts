@@ -1,0 +1,36 @@
+export const COUNTRIES = [
+  { code: "CI", name: "Côte d'Ivoire" },
+  { code: "SN", name: "Sénégal" },
+  { code: "ML", name: "Mali" },
+  { code: "BF", name: "Burkina Faso" },
+  { code: "GN", name: "Guinée" },
+  { code: "BJ", name: "Bénin" },
+  { code: "TG", name: "Togo" },
+  { code: "NE", name: "Niger" },
+  { code: "CM", name: "Cameroun" },
+  { code: "CG", name: "Congo" },
+  { code: "CD", name: "R.D. Congo" },
+  { code: "GA", name: "Gabon" },
+  { code: "TD", name: "Tchad" },
+  { code: "CF", name: "Centrafrique" },
+  { code: "MG", name: "Madagascar" },
+  { code: "HT", name: "Haïti" },
+  { code: "FR", name: "France" },
+  { code: "BE", name: "Belgique" },
+  { code: "CH", name: "Suisse" },
+  { code: "CA", name: "Canada" },
+  { code: "US", name: "États-Unis" },
+  { code: "GB", name: "Royaume-Uni" },
+  { code: "NG", name: "Nigeria" },
+  { code: "GH", name: "Ghana" },
+  { code: "MA", name: "Maroc" },
+  { code: "DZ", name: "Algérie" },
+  { code: "TN", name: "Tunisie" },
+  { code: "RW", name: "Rwanda" },
+  { code: "BI", name: "Burundi" },
+  { code: "XX", name: "Autre" },
+] as const;
+
+export function countryLabel(code: string) {
+  return COUNTRIES.find((country) => country.code === code)?.name ?? code;
+}
