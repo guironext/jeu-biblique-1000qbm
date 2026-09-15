@@ -12,7 +12,7 @@ const prepareOnly = args.includes("--prepare");
 const dir = process.cwd();
 const url =
   args.find((arg) => !arg.startsWith("--")) ??
-  "https://github.com/guironext/1000QBM-.git";
+  "https://github.com/guironext/jeu-biblique-1000qbm.git";
 const branch = "main";
 const author = {
   name: process.env.GIT_AUTHOR_NAME ?? "guironext",
