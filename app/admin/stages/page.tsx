@@ -31,8 +31,8 @@ export default async function AdminStagesPage() {
       <ul className="mt-8 flex flex-col gap-3">
         {catalog.length === 0 ? (
           <li className="rounded-xl border border-stone-200 bg-white p-5 text-sm text-stone-600">
-            Aucun stage pour le moment. Créez le premier catalogue dans la
-            langue voulue.
+            Aucun stage pour le moment. Créez le premier catalogue en
+            Français, Anglais, Espagnol, Allemand ou Portugais.
           </li>
         ) : (
           catalog.map((stage) => (

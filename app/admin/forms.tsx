@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import type { AdminFormState } from "@/lib/admin-schemas";
 import { fieldClassName, primaryButtonClassName } from "@/app/ui/auth-shell";
 import { ImagePicker } from "@/app/ui/image-picker";
+import { LocaleSelect } from "@/app/ui/locale-select";
 
 export function StageForm({
   action,
@@ -53,16 +54,18 @@ export function StageForm({
       </label>
       <label className="flex flex-col gap-1.5 text-sm font-medium text-stone-800">
         Langue
-        <input
-          name="locale"
-          required
-          defaultValue={defaults?.locale ?? "fr"}
-          placeholder="fr"
+        <LocaleSelect
+          defaultValue={defaults?.locale}
           className={fieldClassName}
+          placeholder="Choisir une langue"
         />
         <span className="font-normal text-stone-500">
-          Code de langue du catalogue chargé, sans traduction automatique (ex. fr).
+          Français, Anglais, Espagnol, Allemand ou Portugais. Le stage n&apos;est
+          pas traduit automatiquement.
         </span>
+        {state?.errors?.locale ? (
+          <span className="font-normal text-red-700">{state.errors.locale[0]}</span>
+        ) : null}
       </label>
       <label className="flex flex-col gap-1.5 text-sm font-medium text-stone-800">
         Description
@@ -153,6 +156,7 @@ export function SectionForm({
       ) : null}
       <label className="flex flex-col gap-1.5 text-sm font-medium text-stone-800">
         Titre
+        
         <input
           name="title"
           required

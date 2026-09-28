@@ -1,9 +1,10 @@
 import { Source_Serif_4 } from "next/font/google";
 import { StageCatalog } from "@/app/ui/stage-catalog";
-import { getPublishedStagesForLocale, localeLabel } from "@/lib/catalog";
+import { localeLabel } from "@/lib/catalog";
 import { requireOnboardedPlayer } from "@/lib/dal";
 import { db } from "@/lib/db";
 import { stageProgress } from "@/lib/db/schema";
+import { ensurePlayerCatalogProgress } from "@/lib/player-progress";
 import { eq } from "drizzle-orm";
 
 const sourceSerif = Source_Serif_4({
@@ -14,7 +15,7 @@ const sourceSerif = Source_Serif_4({
 export default async function StagesPage() {
   const { user, profile } = await requireOnboardedPlayer();
 
-  const catalog = await getPublishedStagesForLocale(profile.locale);
+  const catalog = await ensurePlayerCatalogProgress(user.id, profile.locale);
 
   const progressRows = await db.query.stageProgress.findMany({
     where: eq(stageProgress.userId, user.id),

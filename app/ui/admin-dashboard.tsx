@@ -270,8 +270,8 @@ export function AdminDashboard({
         {stages.length === 0 ? (
           <div className="mt-5 rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-8 text-center">
             <p className="text-sm leading-6 text-stone-600">
-              Aucun stage pour le moment. Créez le premier catalogue dans la
-              langue voulue.
+              Aucun stage pour le moment. Créez le premier catalogue en
+              Français, Anglais, Espagnol, Allemand ou Portugais.
             </p>
             <MotionLink
               href="/admin/stages/new"

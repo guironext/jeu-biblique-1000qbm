@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LOCALE_CODES } from "@/lib/locales";
 
 export const StageInputSchema = z.object({
   title: z.string().trim().min(2, { error: "Le titre est trop court." }),
@@ -8,13 +9,39 @@ export const StageInputSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
       error: "Slug en minuscules, chiffres et tirets uniquement.",
     }),
-  locale: z.string().trim().min(2, { error: "Indiquez une langue (ex. fr)." }).max(8),
+  locale: z.enum(LOCALE_CODES, {
+    error: "Choisissez une langue.",
+  }),
   description: z
     .string()
     .trim()
     .min(8, { error: "Ajoutez une description." }),
   orderIndex: z.coerce.number().int().min(1, { error: "Ordre minimum : 1." }),
   published: z.boolean(),
+});
+
+export const AdminUserEmailSchema = z.object({
+  email: z
+    .email({ error: "Entrez une adresse email valide." })
+    .trim()
+    .transform((email) => email.toLowerCase()),
+});
+
+export const AdminUserProfileSchema = z.object({
+  fullName: z
+    .string()
+    .trim()
+    .min(2, { error: "Entrez un nom complet." })
+    .max(120, { error: "Le nom est trop long." }),
+  phone: z
+    .string()
+    .trim()
+    .min(8, { error: "Entrez un numéro de téléphone valide." })
+    .regex(/^[+\d][\d\s.-]{7,19}$/, {
+      error: "Utilisez un numéro au format international.",
+    }),
+  countryCode: z.string().length(2, { error: "Choisissez un pays." }),
+  locale: z.enum(LOCALE_CODES, { error: "Choisissez une langue." }),
 });
 
 export const SectionInputSchema = z.object({

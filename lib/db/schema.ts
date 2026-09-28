@@ -81,6 +81,16 @@ export const sections = pgTable(
   ],
 );
 
+export const catalogImages = pgTable("catalog_images", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  folder: text("folder").notNull(),
+  contentType: text("content_type").notNull(),
+  data: text("data").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
 export const questions = pgTable(
   "questions",
   {

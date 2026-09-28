@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LOCALE_CODES } from "@/lib/locales";
 
 export const SignupFormSchema = z.object({
   email: z.email({ error: "Entrez une adresse email valide." }).trim(),
@@ -30,11 +31,9 @@ export const OnboardingFormSchema = z.object({
   countryCode: z
     .string()
     .length(2, { error: "Choisissez un pays." }),
-  locale: z
-    .string()
-    .trim()
-    .min(2, { error: "Choisissez une langue." })
-    .max(8, { error: "Choisissez une langue." }),
+  locale: z.enum(LOCALE_CODES, {
+    error: "Choisissez une langue.",
+  }),
   role: z.enum(["PLAYER", "ADMIN"], {
     error: "Choisissez un rôle.",
   }),

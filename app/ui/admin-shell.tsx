@@ -19,6 +19,7 @@ export function AdminShell({
           { href: "/admin/stages", label: "Stages" },
           { href: "/admin/sections", label: "Sections" },
           { href: "/admin/questions", label: "Questions" },
+          { href: "/admin/users", label: "Utilisateurs" },
         ]}
       />
       <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-8 lg:px-8">

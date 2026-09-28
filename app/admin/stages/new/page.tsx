@@ -18,8 +18,8 @@ export default async function NewStagePage() {
         Nouveau stage
       </h1>
       <p className="mt-2 max-w-xl text-sm text-stone-600">
-        Un stage appartient à une langue. Il n&apos;est pas traduit
-        automatiquement.
+        Un stage appartient à une langue : Français, Anglais, Espagnol,
+        Allemand ou Portugais. Il n&apos;est pas traduit automatiquement.
       </p>
       <div className="mt-8">
         <StageForm action={createStage} submitLabel="Créer le stage" />

@@ -2,16 +2,7 @@ import { and, asc, eq, inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { answers, questions, sections, stages } from "@/lib/db/schema";
 
-const LOCALE_LABELS: Record<string, string> = {
-  fr: "Français",
-  en: "English",
-  es: "Español",
-  pt: "Português",
-};
-
-export function localeLabel(code: string) {
-  return LOCALE_LABELS[code] ?? code.toUpperCase();
-}
+export { localeLabel } from "@/lib/locales";
 
 export async function getPublishedLocales() {
   const rows = await db.query.stages.findMany({

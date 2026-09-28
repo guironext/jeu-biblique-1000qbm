@@ -6,19 +6,11 @@ import {
   OnboardingFormSchema,
   type OnboardingFormState,
 } from "@/lib/definitions";
-import {
-  getPublishedLocales,
-  getPublishedStagesForLocale,
-} from "@/lib/catalog";
 import { afterLoginPath } from "@/lib/auth-paths";
 import { getProfile, requireUser } from "@/lib/dal";
 import { db } from "@/lib/db";
-import {
-  playerProfiles,
-  sectionProgress,
-  stageProgress,
-  users,
-} from "@/lib/db/schema";
+import { playerProfiles, users } from "@/lib/db/schema";
+import { ensurePlayerCatalogProgress } from "@/lib/player-progress";
 import { createSession } from "@/lib/session";
 
 export async function completeOnboarding(
@@ -47,17 +39,6 @@ export async function completeOnboarding(
   }
 
   const { fullName, phone, countryCode, locale, role } = validatedFields.data;
-  const publishedLocales = await getPublishedLocales();
-
-  if (!publishedLocales.includes(locale)) {
-    return {
-      errors: {
-        locale: [
-          "Aucun stage n'a encore été chargé dans cette langue.",
-        ],
-      },
-    };
-  }
 
   await db.update(users).set({ role }).where(eq(users.id, user.id));
 
@@ -70,28 +51,7 @@ export async function completeOnboarding(
   });
 
   if (role === "PLAYER") {
-    const catalog = await getPublishedStagesForLocale(locale);
-
-    if (catalog.length > 0) {
-      await db.insert(stageProgress).values(
-        catalog.map((stage, index) => ({
-          userId: user.id,
-          stageId: stage.id,
-          status: index === 0 ? ("UNLOCKED" as const) : ("LOCKED" as const),
-        })),
-      );
-
-      const firstStage = catalog[0];
-      if (firstStage.sections.length > 0) {
-        await db.insert(sectionProgress).values(
-          firstStage.sections.map((section, index) => ({
-            userId: user.id,
-            sectionId: section.id,
-            status: index === 0 ? ("UNLOCKED" as const) : ("LOCKED" as const),
-          })),
-        );
-      }
-    }
+    await ensurePlayerCatalogProgress(user.id, locale);
   }
 
   await createSession({

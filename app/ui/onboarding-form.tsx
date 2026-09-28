@@ -7,6 +7,7 @@ import { completeOnboarding } from "@/app/actions/onboarding";
 import { COUNTRIES } from "@/lib/countries";
 import { BrandLogo } from "@/app/ui/brand-logo";
 import { Field } from "@/app/ui/auth-shell";
+import { LocaleSelect } from "@/app/ui/locale-select";
 import {
   easeOutSoft,
   fadeUp,
@@ -26,16 +27,11 @@ const fieldClassName =
 const primaryButtonClassName =
   "inline-flex h-12 w-full items-center justify-center rounded-xl bg-olive-800 px-4 text-sm font-semibold text-white transition-colors hover:bg-olive-900 disabled:cursor-not-allowed disabled:opacity-60";
 
-export function OnboardingForm({
-  locales,
-}: {
-  locales: Array<{ code: string; name: string }>;
-}) {
+export function OnboardingForm() {
   const [state, action, pending] = useActionState(
     completeOnboarding,
     undefined,
   );
-  const hasCatalog = locales.length > 0;
 
   return (
     <div className="relative flex flex-1 flex-col">
@@ -91,8 +87,8 @@ export function OnboardingForm({
               Votre profil
             </h2>
             <p className="mt-2 text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">
-              La langue choisie détermine le catalogue. Il n&apos;y a pas de
-              traduction automatique.
+              Choisissez Français, Anglais, Espagnol, Allemand ou Portugais.
+              La langue détermine le catalogue, sans traduction automatique.
             </p>
 
             <form action={action} className="mt-6 flex flex-col gap-4 sm:mt-7">
@@ -169,26 +165,11 @@ export function OnboardingForm({
                 label="Langue du jeu"
                 error={state?.errors?.locale}
               >
-                {hasCatalog ? (
-                  <select
-                    id="locale"
-                    name="locale"
-                    required
-                    defaultValue={locales[0].code}
-                    className={fieldClassName}
-                  >
-                    {locales.map((locale) => (
-                      <option key={locale.code} value={locale.code}>
-                        {locale.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <p className="rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-3 text-sm leading-6 text-stone-600">
-                    Aucun stage n&apos;a encore été chargé. Revenez lorsque
-                    l&apos;administrateur aura publié un parcours.
-                  </p>
-                )}
+                <LocaleSelect
+                  id="locale"
+                  className={fieldClassName}
+                  placeholder="Choisir une langue"
+                />
               </Field>
               {state?.message ? (
                 <p className="text-sm text-red-700" role="alert">
@@ -197,10 +178,10 @@ export function OnboardingForm({
               ) : null}
               <motion.button
                 className={primaryButtonClassName}
-                disabled={pending || !hasCatalog}
+                disabled={pending}
                 type="submit"
-                whileHover={pending || !hasCatalog ? undefined : hoverLift}
-                whileTap={pending || !hasCatalog ? undefined : tap}
+                whileHover={pending ? undefined : hoverLift}
+                whileTap={pending ? undefined : tap}
               >
                 {pending ? "Enregistrement…" : "Continuer"}
               </motion.button>
