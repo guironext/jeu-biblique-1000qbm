@@ -52,7 +52,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const resendKey = process.env.RESEND_API_KEY;
   if (resendKey) {
     try {
-      // Dynamic import to avoid requiring it at build time
+      // Dynamic import - will fail gracefully if package not installed
       const { Resend } = await import("resend");
       const resend = new Resend(resendKey);
 
@@ -67,7 +67,14 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       console.log(`Email sent to ${options.to} via Resend`);
       return true;
     } catch (error) {
-      console.error("Resend email error:", error);
+      const err = error as { code?: string };
+      if (err?.code === "MODULE_NOT_FOUND") {
+        console.error(
+          "Resend package not installed. Run: npm install resend",
+        );
+      } else {
+        console.error("Resend email error:", error);
+      }
       return false;
     }
   }
@@ -90,7 +97,14 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       console.log(`Email sent to ${options.to} via SendGrid`);
       return true;
     } catch (error) {
-      console.error("SendGrid email error:", error);
+      const err = error as { code?: string };
+      if (err?.code === "MODULE_NOT_FOUND") {
+        console.error(
+          "SendGrid package not installed. Run: npm install @sendgrid/mail",
+        );
+      } else {
+        console.error("SendGrid email error:", error);
+      }
       return false;
     }
   }
@@ -125,7 +139,14 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       console.log(`Email sent to ${options.to} via SMTP`);
       return true;
     } catch (error) {
-      console.error("SMTP email error:", error);
+      const err = error as { code?: string };
+      if (err?.code === "MODULE_NOT_FOUND") {
+        console.error(
+          "Nodemailer package not installed. Run: npm install nodemailer",
+        );
+      } else {
+        console.error("SMTP email error:", error);
+      }
       return false;
     }
   }

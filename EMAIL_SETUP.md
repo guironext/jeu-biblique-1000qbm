@@ -21,7 +21,11 @@ This creates the `password_reset_tokens` table. **Without this step, password re
 1. Sign up at https://resend.com
 2. Verify your domain (or use their test domain for development)
 3. Create an API key in the dashboard
-4. Install the package:
+4. The `resend` package is listed as an optional dependency. Install it:
+   ```bash
+   npm install
+   ```
+   Or explicitly:
    ```bash
    npm install resend
    ```
@@ -49,7 +53,15 @@ Use SMTP with any email provider that supports it.
    - Go to https://myaccount.google.com/security
    - Select "App passwords" (under 2-Step Verification)
    - Generate a password for "Mail"
-3. Add to `.env.local`:
+3. The `nodemailer` package is listed as an optional dependency. Install it:
+   ```bash
+   npm install
+   ```
+   Or explicitly:
+   ```bash
+   npm install nodemailer
+   ```
+4. Add to `.env.local`:
    ```env
    SMTP_HOST=smtp.gmail.com
    SMTP_PORT=587
@@ -57,11 +69,6 @@ Use SMTP with any email provider that supports it.
    SMTP_PASSWORD=your-app-password
    EMAIL_FROM="1000 QBM+ <your-email@gmail.com>"
    NEXT_PUBLIC_APP_URL=http://localhost:3000
-   ```
-4. Install nodemailer:
-   ```bash
-   npm install nodemailer
-   npm install -D @types/nodemailer
    ```
 
 ### Other SMTP Providers:
@@ -93,7 +100,11 @@ SMTP_PASSWORD=your-password
 1. Sign up at https://sendgrid.com
 2. Verify your sender identity (email or domain)
 3. Create an API key in Settings > API Keys
-4. Install the package:
+4. The `@sendgrid/mail` package is listed as an optional dependency. Install it:
+   ```bash
+   npm install
+   ```
+   Or explicitly:
    ```bash
    npm install @sendgrid/mail
    ```
@@ -107,6 +118,41 @@ SMTP_PASSWORD=your-password
 ### Pricing:
 - Free tier: 100 emails/day
 - Paid: From $19.95/month for 50,000 emails
+
+---
+
+## Package Installation
+
+All email provider packages are listed as **optional dependencies** in `package.json`. This means:
+
+- ✅ Next.js won't complain about missing packages during build
+- ✅ You only need to install the provider(s) you plan to use
+- ✅ Running `npm install` installs them automatically (if available)
+
+### Installing a Specific Provider
+
+**Resend:**
+```bash
+npm install resend
+```
+
+**SMTP (nodemailer):**
+```bash
+npm install nodemailer
+```
+
+**SendGrid:**
+```bash
+npm install @sendgrid/mail
+```
+
+### What Happens Without Installation?
+
+If you configure an email provider (e.g., set `RESEND_API_KEY`) but haven't installed the package, the system will:
+1. Attempt to send the email
+2. Catch the MODULE_NOT_FOUND error
+3. Log a clear message: "Resend package not installed. Run: npm install resend"
+4. Return failure gracefully without crashing
 
 ---
 
