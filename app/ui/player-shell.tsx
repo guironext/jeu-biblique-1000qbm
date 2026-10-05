@@ -1,12 +1,18 @@
 import { SessionChrome } from "@/app/ui/session-chrome";
+import { translateJoueur } from "@/lib/joueur-i18n";
 
 export function PlayerShell({
   email,
+  locale,
   children,
 }: {
   email: string;
+  locale?: string;
   children: React.ReactNode;
 }) {
+  const t = (key: Parameters<typeof translateJoueur>[0]) =>
+    translateJoueur(key, locale ?? "fr");
+
   return (
     <div className="flex flex-1 flex-col">
       <SessionChrome
@@ -15,9 +21,9 @@ export function PlayerShell({
         email={email}
         variant="player"
         links={[
-          { href: "/joueur", label: "Accueil" },
-          { href: "/stages", label: "Stages" },
-          { href: "/compte", label: "Mon compte" },
+          { href: "/joueur", label: t("navHome") },
+          { href: "/stages", label: t("navStages") },
+          { href: "/compte", label: t("navAccount") },
         ]}
       />
       {children}
