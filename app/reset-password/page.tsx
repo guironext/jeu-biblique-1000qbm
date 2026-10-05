@@ -1,14 +1,20 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Source_Serif_4 } from "next/font/google";
-import { login } from "@/app/actions/auth";
+import { resetPassword, verifyResetToken } from "@/app/actions/password-reset";
 import { BrandLogo } from "@/app/ui/brand-logo";
 import { Field } from "@/app/ui/auth-shell";
-import { easeOutSoft, fadeUp, hoverLift, stagger, tap } from "@/app/ui/page-motion";
+import {
+  easeOutSoft,
+  fadeUp,
+  hoverLift,
+  stagger,
+  tap,
+} from "@/app/ui/page-motion";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -21,10 +27,73 @@ const fieldClassName =
 const primaryButtonClassName =
   "inline-flex h-12 w-full items-center justify-center rounded-xl bg-olive-800 px-4 text-sm font-semibold text-white transition-colors hover:bg-olive-900 disabled:cursor-not-allowed disabled:opacity-60";
 
-export function LoginForm() {
+export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
-  const resetSuccess = searchParams.get("reset") === "success";
-  const [state, action, pending] = useActionState(login, undefined);
+  const token = searchParams.get("token");
+  const [tokenStatus, setTokenStatus] = useState<"validating" | "valid" | "invalid">(
+    token ? "validating" : "invalid"
+  );
+
+  const resetPasswordWithToken = resetPassword.bind(null, token || "");
+  const [state, action, pending] = useActionState(
+    resetPasswordWithToken,
+    undefined,
+  );
+
+  useEffect(() => {
+    if (!token) return;
+
+    verifyResetToken(token).then((valid) => {
+      setTokenStatus(valid ? "valid" : "invalid");
+    });
+  }, [token]);
+
+  if (tokenStatus === "validating") {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        <p className="text-sm text-stone-600">Vérification du lien...</p>
+      </div>
+    );
+  }
+
+  if (tokenStatus === "invalid") {
+    return (
+      <div className="relative flex min-h-dvh flex-1 flex-col overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(244,247,238,0.95),_transparent_58%),radial-gradient(ellipse_at_bottom_right,_rgba(212,221,184,0.45),_transparent_46%)]"
+        />
+
+        <div className="relative mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-10">
+          <div className="rounded-2xl border border-red-200 bg-white/80 p-8 text-center backdrop-blur-sm">
+            <h1
+              className={`${sourceSerif.className} text-2xl font-semibold text-stone-900`}
+            >
+              Lien invalide ou expiré
+            </h1>
+            <p className="mt-3 text-base leading-7 text-stone-600">
+              Ce lien de réinitialisation est invalide ou a expiré. Les liens
+              sont valables pendant 1 heure seulement.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Link
+                href="/forgot-password"
+                className="inline-flex h-12 items-center justify-center rounded-xl bg-olive-800 px-6 text-sm font-semibold text-white hover:bg-olive-900"
+              >
+                Demander un nouveau lien
+              </Link>
+              <Link
+                href="/login"
+                className="inline-flex h-12 items-center justify-center rounded-xl border border-stone-300 bg-white px-6 text-sm font-semibold text-stone-900 hover:bg-stone-50"
+              >
+                Retour à la connexion
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex min-h-dvh flex-1 flex-col overflow-hidden">
@@ -61,8 +130,8 @@ export function LoginForm() {
               style={{ width: 64 }}
             />
             <p className="mt-3 hidden max-w-md text-base leading-7 text-stone-600 lg:mt-5 lg:block">
-              Un parcours de questions à choix unique, stage après stage.
-              Connectez-vous pour reprendre votre progression.
+              Créez un nouveau mot de passe sécurisé. Utilisez au moins 8
+              caractères avec une combinaison de lettres et de chiffres.
             </p>
           </motion.div>
 
@@ -71,64 +140,46 @@ export function LoginForm() {
             className="mx-auto w-full max-w-md rounded-2xl border border-olive-200/70 bg-white/80 p-5 shadow-[0_24px_60px_-36px_rgba(28,25,23,0.45)] backdrop-blur-sm sm:rounded-3xl sm:p-8 lg:mx-0 lg:max-w-none"
           >
             <p className="text-xs font-semibold tracking-[0.18em] text-olive-800 uppercase">
-              Connexion
+              Réinitialisation
             </p>
             <h2
               className={`${sourceSerif.className} mt-2 text-2xl font-semibold tracking-tight text-stone-900 sm:text-[1.75rem]`}
             >
-              Bon retour
+              Nouveau mot de passe
             </h2>
             <p className="mt-2 text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">
-              Entrez votre email et votre mot de passe pour reprendre votre
-              progression.
+              Choisissez un mot de passe fort pour sécuriser votre compte.
             </p>
 
-            {resetSuccess ? (
-              <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4 sm:mt-7">
-                <p className="text-sm font-medium text-green-900">
-                  Mot de passe réinitialisé avec succès !
-                </p>
-                <p className="mt-1 text-sm text-green-800">
-                  Vous pouvez maintenant vous connecter avec votre nouveau mot
-                  de passe.
-                </p>
-              </div>
-            ) : null}
-
             <form action={action} className="mt-6 flex flex-col gap-4 sm:mt-7">
-              <Field id="email" label="Email" error={state?.errors?.email}>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  inputMode="email"
-                  required
-                  className={fieldClassName}
-                />
-              </Field>
               <Field
                 id="password"
-                label="Mot de passe"
+                label="Nouveau mot de passe"
                 error={state?.errors?.password}
               >
                 <input
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   required
                   className={fieldClassName}
                 />
               </Field>
-              <div className="flex items-center justify-end">
-                <Link
-                  href="/forgot-password"
-                  className="text-sm font-medium text-olive-800 underline-offset-4 hover:underline"
-                >
-                  Mot de passe oublié ?
-                </Link>
-              </div>
+              <Field
+                id="confirmPassword"
+                label="Confirmer le mot de passe"
+                error={state?.errors?.confirmPassword}
+              >
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className={fieldClassName}
+                />
+              </Field>
               {state?.message ? (
                 <p className="text-sm text-red-700" role="alert">
                   {state.message}
@@ -141,17 +192,16 @@ export function LoginForm() {
                 whileHover={pending ? undefined : hoverLift}
                 whileTap={pending ? undefined : tap}
               >
-                {pending ? "Connexion…" : "Se connecter"}
+                {pending ? "Enregistrement…" : "Réinitialiser le mot de passe"}
               </motion.button>
             </form>
 
             <p className="mt-6 text-center text-sm text-stone-600 lg:text-left">
-              Nouveau joueur ?{" "}
               <Link
-                href="/register"
+                href="/login"
                 className="font-medium text-olive-800 underline-offset-4 hover:underline"
               >
-                Créer un compte
+                Retour à la connexion
               </Link>
             </p>
           </motion.div>

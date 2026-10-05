@@ -1,14 +1,19 @@
 "use client";
 
 import { useActionState } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Source_Serif_4 } from "next/font/google";
-import { login } from "@/app/actions/auth";
+import { requestPasswordReset } from "@/app/actions/password-reset";
 import { BrandLogo } from "@/app/ui/brand-logo";
 import { Field } from "@/app/ui/auth-shell";
-import { easeOutSoft, fadeUp, hoverLift, stagger, tap } from "@/app/ui/page-motion";
+import {
+  easeOutSoft,
+  fadeUp,
+  hoverLift,
+  stagger,
+  tap,
+} from "@/app/ui/page-motion";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -21,10 +26,11 @@ const fieldClassName =
 const primaryButtonClassName =
   "inline-flex h-12 w-full items-center justify-center rounded-xl bg-olive-800 px-4 text-sm font-semibold text-white transition-colors hover:bg-olive-900 disabled:cursor-not-allowed disabled:opacity-60";
 
-export function LoginForm() {
-  const searchParams = useSearchParams();
-  const resetSuccess = searchParams.get("reset") === "success";
-  const [state, action, pending] = useActionState(login, undefined);
+export default function ForgotPasswordPage() {
+  const [state, action, pending] = useActionState(
+    requestPasswordReset,
+    undefined,
+  );
 
   return (
     <div className="relative flex min-h-dvh flex-1 flex-col overflow-hidden">
@@ -61,8 +67,8 @@ export function LoginForm() {
               style={{ width: 64 }}
             />
             <p className="mt-3 hidden max-w-md text-base leading-7 text-stone-600 lg:mt-5 lg:block">
-              Un parcours de questions à choix unique, stage après stage.
-              Connectez-vous pour reprendre votre progression.
+              Mot de passe oublié ? Pas de problème. Entrez votre email et nous
+              vous enverrons un lien pour créer un nouveau mot de passe.
             </p>
           </motion.div>
 
@@ -71,89 +77,75 @@ export function LoginForm() {
             className="mx-auto w-full max-w-md rounded-2xl border border-olive-200/70 bg-white/80 p-5 shadow-[0_24px_60px_-36px_rgba(28,25,23,0.45)] backdrop-blur-sm sm:rounded-3xl sm:p-8 lg:mx-0 lg:max-w-none"
           >
             <p className="text-xs font-semibold tracking-[0.18em] text-olive-800 uppercase">
-              Connexion
+              Récupération
             </p>
             <h2
               className={`${sourceSerif.className} mt-2 text-2xl font-semibold tracking-tight text-stone-900 sm:text-[1.75rem]`}
             >
-              Bon retour
+              Mot de passe oublié
             </h2>
             <p className="mt-2 text-sm leading-6 text-stone-600 sm:text-base sm:leading-7">
-              Entrez votre email et votre mot de passe pour reprendre votre
-              progression.
+              Entrez l&apos;adresse email associée à votre compte pour recevoir
+              un lien de réinitialisation.
             </p>
 
-            {resetSuccess ? (
+            {state?.success ? (
               <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-4 sm:mt-7">
-                <p className="text-sm font-medium text-green-900">
-                  Mot de passe réinitialisé avec succès !
-                </p>
-                <p className="mt-1 text-sm text-green-800">
-                  Vous pouvez maintenant vous connecter avec votre nouveau mot
-                  de passe.
-                </p>
-              </div>
-            ) : null}
-
-            <form action={action} className="mt-6 flex flex-col gap-4 sm:mt-7">
-              <Field id="email" label="Email" error={state?.errors?.email}>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  inputMode="email"
-                  required
-                  className={fieldClassName}
-                />
-              </Field>
-              <Field
-                id="password"
-                label="Mot de passe"
-                error={state?.errors?.password}
-              >
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className={fieldClassName}
-                />
-              </Field>
-              <div className="flex items-center justify-end">
-                <Link
-                  href="/forgot-password"
-                  className="text-sm font-medium text-olive-800 underline-offset-4 hover:underline"
-                >
-                  Mot de passe oublié ?
-                </Link>
-              </div>
-              {state?.message ? (
-                <p className="text-sm text-red-700" role="alert">
+                <p className="text-sm leading-6 text-green-900">
                   {state.message}
                 </p>
-              ) : null}
-              <motion.button
-                className={primaryButtonClassName}
-                disabled={pending}
-                type="submit"
-                whileHover={pending ? undefined : hoverLift}
-                whileTap={pending ? undefined : tap}
-              >
-                {pending ? "Connexion…" : "Se connecter"}
-              </motion.button>
-            </form>
+                <p className="mt-3 text-sm text-green-800">
+                  Vérifiez votre boîte de réception et vos spams. Le lien est
+                  valable pendant 1 heure.
+                </p>
+                <Link
+                  href="/login"
+                  className="mt-4 inline-flex items-center text-sm font-medium text-green-800 underline-offset-4 hover:underline"
+                >
+                  Retour à la connexion
+                </Link>
+              </div>
+            ) : (
+              <form action={action} className="mt-6 flex flex-col gap-4 sm:mt-7">
+                <Field id="email" label="Email" error={state?.errors?.email}>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    required
+                    className={fieldClassName}
+                  />
+                </Field>
+                {state?.message && !state.success ? (
+                  <p className="text-sm text-red-700" role="alert">
+                    {state.message}
+                  </p>
+                ) : null}
+                <motion.button
+                  className={primaryButtonClassName}
+                  disabled={pending}
+                  type="submit"
+                  whileHover={pending ? undefined : hoverLift}
+                  whileTap={pending ? undefined : tap}
+                >
+                  {pending ? "Envoi en cours…" : "Envoyer le lien"}
+                </motion.button>
+              </form>
+            )}
 
-            <p className="mt-6 text-center text-sm text-stone-600 lg:text-left">
-              Nouveau joueur ?{" "}
-              <Link
-                href="/register"
-                className="font-medium text-olive-800 underline-offset-4 hover:underline"
-              >
-                Créer un compte
-              </Link>
-            </p>
+            {!state?.success && (
+              <p className="mt-6 text-center text-sm text-stone-600 lg:text-left">
+                Vous vous souvenez de votre mot de passe ?{" "}
+                <Link
+                  href="/login"
+                  className="font-medium text-olive-800 underline-offset-4 hover:underline"
+                >
+                  Se connecter
+                </Link>
+              </p>
+            )}
           </motion.div>
         </motion.div>
       </div>

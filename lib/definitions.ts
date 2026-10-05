@@ -62,6 +62,34 @@ export type OnboardingFormState =
     }
   | undefined;
 
+export const ForgotPasswordSchema = z.object({
+  email: z.email({ error: "Entrez une adresse email valide." }).trim(),
+});
+
+export const ResetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(8, { error: "Au moins 8 caractères." })
+    .regex(/[a-zA-Z]/, { error: "Au moins une lettre." })
+    .regex(/[0-9]/, { error: "Au moins un chiffre." }),
+  confirmPassword: z.string().min(1, { error: "Confirmez le mot de passe." }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Les mots de passe ne correspondent pas.",
+  path: ["confirmPassword"],
+});
+
+export type PasswordResetFormState =
+  | {
+      errors?: {
+        email?: string[];
+        password?: string[];
+        confirmPassword?: string[];
+      };
+      message?: string;
+      success?: boolean;
+    }
+  | undefined;
+
 export type SessionPayload = {
   userId: string;
   role: "PLAYER" | "ADMIN";
