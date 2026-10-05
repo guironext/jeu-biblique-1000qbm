@@ -3,5 +3,5 @@ export function afterLoginPath(role: "PLAYER" | "ADMIN", onboarded: boolean) {
     return "/admin";
   }
 
-  return onboarded ? "/stages" : "/onboarding";
+  return onboarded ? "/joueur" : "/onboarding";
 }

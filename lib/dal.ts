@@ -61,7 +61,7 @@ export const requireAdmin = cache(async () => {
   const { session, user } = await requireUser();
 
   if (user.role !== "ADMIN") {
-    redirect("/stages");
+    redirect("/joueur");
   }
 
   return { session, user };
