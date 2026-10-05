@@ -15,6 +15,7 @@ type JoueurContentProps = {
   heroTitleLong: string;
   heroParagraph: string;
   challengeLine: string;
+  ctaStart: string;
   playStagesTitle: string;
   playStagesDescription: string;
   myAccountTitle: string;
@@ -28,6 +29,7 @@ export function JoueurContent({
   heroTitleLong,
   heroParagraph,
   challengeLine,
+  ctaStart,
   playStagesTitle,
   playStagesDescription,
   myAccountTitle,
@@ -88,6 +90,18 @@ export function JoueurContent({
         <p className="flex-1 text-[0.9375rem] font-semibold leading-snug text-olive-900 sm:text-base">
           {challengeLine}
         </p>
+      </motion.div>
+
+      {/* CTA Button */}
+      <motion.div variants={fadeUp} className="mt-6 flex w-full max-w-prose sm:mt-7">
+        <MotionLink
+          href="/joueur/stages/"
+          className="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-olive-600 to-olive-400 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:from-olive-700 hover:to-olive-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600 sm:w-auto sm:px-5 sm:py-4 sm:text-base"
+          whileHover={hoverLift}
+          whileTap={tap}
+        >
+          {ctaStart}
+        </MotionLink>
       </motion.div>
 
       {/* Action Cards */}

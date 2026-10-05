@@ -22,6 +22,7 @@ export default async function JoueurPage() {
       heroTitleLong={t("heroTitleLong")}
       heroParagraph={t("heroParagraph")}
       challengeLine={t("challengeLine")}
+      ctaStart={t("ctaStart")}
       playStagesTitle={t("playStagesTitle")}
       playStagesDescription={t("playStagesDescription", {
         locale: localeLabel(profile.locale).toLowerCase(),
