@@ -48,20 +48,37 @@ export async function requestPasswordReset(
   }
 
   // Delete any existing tokens for this user
-  await db
-    .delete(passwordResetTokens)
-    .where(eq(passwordResetTokens.userId, user.id));
+  try {
+    await db
+      .delete(passwordResetTokens)
+      .where(eq(passwordResetTokens.userId, user.id));
+  } catch (error) {
+    // Table doesn't exist - migration not run
+    console.error("Password reset table missing:", error);
+    return {
+      message:
+        "La fonctionnalité de réinitialisation n'est pas configurée. Contactez l'administrateur. (Migration requise: npm run db:push)",
+    };
+  }
 
   // Generate secure random token
   const token = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + TOKEN_EXPIRY_HOURS * 60 * 60 * 1000);
 
   // Store token in database
-  await db.insert(passwordResetTokens).values({
-    userId: user.id,
-    token,
-    expiresAt,
-  });
+  try {
+    await db.insert(passwordResetTokens).values({
+      userId: user.id,
+      token,
+      expiresAt,
+    });
+  } catch (error) {
+    console.error("Failed to create password reset token:", error);
+    return {
+      message:
+        "Impossible de générer le lien de réinitialisation. Contactez l'administrateur.",
+    };
+  }
 
   // Generate reset URL
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -97,14 +114,19 @@ export async function requestPasswordReset(
 export async function verifyResetToken(token: string): Promise<boolean> {
   if (!token) return false;
 
-  const resetToken = await db.query.passwordResetTokens.findFirst({
-    where: and(
-      eq(passwordResetTokens.token, token),
-      gt(passwordResetTokens.expiresAt, new Date()),
-    ),
-  });
+  try {
+    const resetToken = await db.query.passwordResetTokens.findFirst({
+      where: and(
+        eq(passwordResetTokens.token, token),
+        gt(passwordResetTokens.expiresAt, new Date()),
+      ),
+    });
 
-  return Boolean(resetToken);
+    return Boolean(resetToken);
+  } catch (error) {
+    console.error("Failed to verify reset token (table may not exist):", error);
+    return false;
+  }
 }
 
 /**
@@ -127,12 +149,21 @@ export async function resetPassword(
   }
 
   // Find valid token
-  const resetToken = await db.query.passwordResetTokens.findFirst({
-    where: and(
-      eq(passwordResetTokens.token, token),
-      gt(passwordResetTokens.expiresAt, new Date()),
-    ),
-  });
+  let resetToken;
+  try {
+    resetToken = await db.query.passwordResetTokens.findFirst({
+      where: and(
+        eq(passwordResetTokens.token, token),
+        gt(passwordResetTokens.expiresAt, new Date()),
+      ),
+    });
+  } catch (error) {
+    console.error("Failed to query reset token (table may not exist):", error);
+    return {
+      message:
+        "La fonctionnalité de réinitialisation n'est pas configurée. Contactez l'administrateur.",
+    };
+  }
 
   if (!resetToken) {
     return {
@@ -145,15 +176,23 @@ export async function resetPassword(
   const passwordHash = await bcrypt.hash(validatedFields.data.password, 10);
 
   // Update user password
-  await db
-    .update(users)
-    .set({ passwordHash })
-    .where(eq(users.id, resetToken.userId));
+  try {
+    await db
+      .update(users)
+      .set({ passwordHash })
+      .where(eq(users.id, resetToken.userId));
 
-  // Delete all reset tokens for this user
-  await db
-    .delete(passwordResetTokens)
-    .where(eq(passwordResetTokens.userId, resetToken.userId));
+    // Delete all reset tokens for this user
+    await db
+      .delete(passwordResetTokens)
+      .where(eq(passwordResetTokens.userId, resetToken.userId));
+  } catch (error) {
+    console.error("Failed to update password:", error);
+    return {
+      message:
+        "Impossible de réinitialiser le mot de passe. Réessayez ou contactez l'administrateur.",
+    };
+  }
 
   redirect("/login?reset=success");
 }

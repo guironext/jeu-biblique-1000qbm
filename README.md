@@ -2,6 +2,41 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### 1. Database Setup
+
+Apply database migrations:
+
+```bash
+npm run db:push
+```
+
+This creates all required tables, including `password_reset_tokens` for the password reset feature.
+
+### 2. Email Configuration (Optional)
+
+To enable password reset functionality, configure an email provider. See [EMAIL_SETUP.md](./EMAIL_SETUP.md) for detailed instructions.
+
+Quick setup with SMTP (e.g., Gmail):
+
+```env
+# Add to .env.local
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+EMAIL_FROM="1000 QBM+ <your-email@gmail.com>"
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+Then install nodemailer:
+
+```bash
+npm install nodemailer
+npm install -D @types/nodemailer
+```
+
+### 3. Run Development Server
+
 First, run the development server:
 
 ```bash

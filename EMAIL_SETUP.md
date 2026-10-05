@@ -2,6 +2,16 @@
 
 The password reset feature requires email sending capability. Choose one of the options below and configure the environment variables.
 
+## ⚠️ IMPORTANT: Database Migration Required
+
+**Before using password reset, you MUST run the database migration:**
+
+```bash
+npm run db:push
+```
+
+This creates the `password_reset_tokens` table. **Without this step, password reset will fail** with an error message asking users to contact the administrator.
+
 ## Option 1: Resend (Recommended for Production)
 
 [Resend](https://resend.com) is a modern email API designed for developers.
@@ -179,6 +189,30 @@ Before deploying:
 - Tokens expire after 1 hour
 - Request a new password reset link
 - Check server time is synchronized
+
+### "La fonctionnalité de réinitialisation n'est pas configurée" error?
+
+This means the database migration hasn't been run. Fix it:
+
+1. Run the migration:
+   ```bash
+   npm run db:push
+   ```
+
+2. Restart your development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Verify the table exists in your database:
+   ```sql
+   SELECT * FROM password_reset_tokens LIMIT 1;
+   ```
+
+If the error persists:
+- Check that `DATABASE_URL` or `DATABASE_URL_UNPOOLED` is set correctly
+- Verify database connection is working
+- Check Drizzle config in `drizzle.config.ts`
 
 ---
 
