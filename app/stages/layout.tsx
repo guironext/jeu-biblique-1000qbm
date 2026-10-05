@@ -4,7 +4,11 @@ import { requireOnboardedPlayer } from "@/lib/dal";
 export default async function PlayerLayout({
   children,
 }: LayoutProps<"/stages">) {
-  const { user } = await requireOnboardedPlayer();
+  const { user, profile } = await requireOnboardedPlayer();
 
-  return <PlayerShell email={user.email}>{children}</PlayerShell>;
+  return (
+    <PlayerShell email={user.email} locale={profile.locale}>
+      {children}
+    </PlayerShell>
+  );
 }
