@@ -10,7 +10,7 @@ const sourceSerif = Source_Serif_4({
 });
 
 export default async function JoueurPage() {
-  const { user, profile } = await requireOnboardedPlayer();
+  const { profile } = await requireOnboardedPlayer();
 
   const t = (key: Parameters<typeof translateJoueur>[0], replacements?: Record<string, string>) =>
     translateJoueur(key, profile.locale, replacements);
@@ -23,11 +23,19 @@ export default async function JoueurPage() {
       <h1
         className={`${sourceSerif.className} mt-3 text-3xl font-semibold tracking-tight text-stone-900`}
       >
-        {t("welcome", { name: profile.fullName || user.email })}
+        <span className="sm:hidden">{t("heroTitleShort")}</span>
+        <span className="hidden sm:inline">{t("heroTitleLong")}</span>
       </h1>
-      <p className="mt-3 max-w-2xl text-base leading-7 text-stone-600">
-        {t("description")}
+
+      <p className="mt-5 max-w-prose text-sm leading-relaxed text-stone-900 sm:text-base lg:text-lg">
+        {t("heroParagraph")}
       </p>
+
+      <div className="mt-5 flex w-full max-w-prose flex-col items-center gap-3 sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <p className="text-sm font-semibold leading-snug text-stone-900 sm:text-base">
+          {t("challengeLine")}
+        </p>
+      </div>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <Link
