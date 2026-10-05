@@ -36,5 +36,11 @@
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "@sendgrid/mail": "^8.1.4",
+    "@types/nodemailer": "^6.4.17",
+    "nodemailer": "^6.9.17",
+    "resend": "^4.0.1"
   }
 }

@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "5mb",
     },
   },
+  // Mark optional email providers as external to avoid build errors when not installed
+  serverExternalPackages: ["nodemailer", "resend", "@sendgrid/mail"],
 };
 
 export default nextConfig;
