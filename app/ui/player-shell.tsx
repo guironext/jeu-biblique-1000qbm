@@ -15,6 +15,7 @@ export function PlayerShell({
         email={email}
         variant="player"
         links={[
+          { href: "/joueur", label: "Accueil" },
           { href: "/stages", label: "Stages" },
           { href: "/compte", label: "Mon compte" },
         ]}
