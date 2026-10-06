@@ -103,7 +103,6 @@ export function StageCatalog({
           {stages.map((stage) => {
             const isLocked = stage.status === "LOCKED";
             const isCompleted = stage.status === "COMPLETED";
-            const isUnlocked = stage.status === "UNLOCKED";
 
             return (
               <motion.div
@@ -117,7 +116,7 @@ export function StageCatalog({
                 }`}
               >
                 {stage.imageUrl ? (
-                  <div className="relative h-44 w-full sm:h-48">
+                  <div className="relative h-32 w-full sm:h-36">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={stage.imageUrl}
@@ -126,18 +125,18 @@ export function StageCatalog({
                     />
                     {isLocked && (
                       <div className="absolute inset-0 flex items-center justify-center bg-stone-900/20">
-                        <LockIcon className="h-12 w-12 text-white/90" />
+                        <LockIcon className="h-10 w-10 text-white/90" />
                       </div>
                     )}
                   </div>
                 ) : isLocked ? (
-                  <div className="flex h-44 w-full items-center justify-center bg-stone-100 sm:h-48">
-                    <LockIcon className="h-12 w-12 text-stone-400" />
+                  <div className="flex h-32 w-full items-center justify-center bg-stone-100 sm:h-36">
+                    <LockIcon className="h-10 w-10 text-stone-400" />
                   </div>
                 ) : null}
 
-                <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="mb-3 flex items-center justify-between">
+                <div className="flex flex-1 flex-col p-4 sm:p-5">
+                  <div className="mb-2 flex items-center justify-between">
                     <p
                       className={`text-xs font-medium uppercase tracking-wide ${
                         isLocked
@@ -168,7 +167,7 @@ export function StageCatalog({
                   </div>
 
                   <h2
-                    className={`${headingClassName} text-xl font-semibold sm:text-2xl ${
+                    className={`${headingClassName} text-lg font-semibold sm:text-xl ${
                       isLocked ? "text-stone-600" : "text-stone-900"
                     }`}
                   >
@@ -176,14 +175,14 @@ export function StageCatalog({
                   </h2>
 
                   <p
-                    className={`mt-2 flex-1 text-sm leading-6 ${
+                    className={`mt-2 h-20 overflow-y-auto overscroll-contain pr-1 text-sm leading-5 [scrollbar-width:thin] ${
                       isLocked ? "text-stone-500" : "text-stone-600"
                     }`}
                   >
                     {stage.description}
                   </p>
 
-                  <div className="mt-5">
+                  <div className="mt-4">
                     {isLocked ? (
                       <div className="flex items-center gap-2 text-sm text-stone-500">
                         <LockIcon className="h-4 w-4" />
@@ -194,7 +193,7 @@ export function StageCatalog({
                         href={`/joueur/stages/${stage.id}`}
                         whileHover={hoverLift}
                         whileTap={tap}
-                        className="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-olive-600 to-olive-400 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:from-olive-700 hover:to-olive-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600"
+                        className="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-olive-600 to-olive-400 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-olive-700 hover:to-olive-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600"
                       >
                         {translations.playButton}
                       </MotionLink>
