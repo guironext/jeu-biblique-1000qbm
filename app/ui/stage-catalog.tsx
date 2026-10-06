@@ -63,7 +63,7 @@ export function StageCatalog({
 }) {
   return (
     <motion.main
-      className="mx-auto w-full max-w-5xl flex-1 px-4 py-10 sm:px-6"
+      className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6"
       initial="hidden"
       animate="show"
       variants={stagger}

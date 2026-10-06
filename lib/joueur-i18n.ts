@@ -52,6 +52,21 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     navHome: "Accueil",
     navStages: "Stages",
     navAccount: "Mon compte",
+    stagesPageTitle: "Accueil des stages",
+    stagesPageSubtitle: "Le jeu, en quelques règles",
+    stagesPageDescription1:
+      "1000 QBM+ est un parcours de questions à choix unique. Chaque stage contient au moins cinq sections. Chaque section est un jeu de 40 questions, avec une seule bonne réponse.",
+    stagesPageDescription2:
+      "Une bonne réponse vaut 1 point. Il faut au moins 80 % (32/40) pour valider une section et débloquer la suivante. Les stages s'ouvrent dans l'ordre : seul le premier stage est actif pour un nouveau joueur. Vous ne voyez que les stages chargés en {localeName} ; les autres langues restent invisibles.",
+    noStagesMessage:
+      "Aucun stage n'a encore été chargé dans votre langue ({localeName}). L'administrateur doit publier un parcours dans cette langue pour que vous puissiez jouer.",
+    statusLocked: "Verrouillé",
+    statusUnlocked: "Disponible",
+    statusCompleted: "Terminé",
+    playButton: "Jouer",
+    reviewButton: "Revoir",
+    lockedMessage: "Terminez le stage précédent pour débloquer celui-ci.",
+    progressLabel: "Progression : {completed}/{total} sections",
   },
   en: {
     pageTitle: "Player Area",
