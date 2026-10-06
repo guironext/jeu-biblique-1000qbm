@@ -16,6 +16,18 @@ type JoueurTranslations = {
   navHome: string;
   navStages: string;
   navAccount: string;
+  stagesPageTitle: string;
+  stagesPageSubtitle: string;
+  stagesPageDescription1: string;
+  stagesPageDescription2: string;
+  noStagesMessage: string;
+  statusLocked: string;
+  statusUnlocked: string;
+  statusCompleted: string;
+  playButton: string;
+  reviewButton: string;
+  lockedMessage: string;
+  progressLabel: string;
 };
 
 const translations: Record<LocaleCode, JoueurTranslations> = {
@@ -40,6 +52,21 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     navHome: "Accueil",
     navStages: "Stages",
     navAccount: "Mon compte",
+    stagesPageTitle: "Accueil des stages",
+    stagesPageSubtitle: "Le jeu, en quelques règles",
+    stagesPageDescription1:
+      "1000 QBM+ est un parcours de questions à choix unique. Chaque stage contient au moins cinq sections. Chaque section est un jeu de 40 questions, avec une seule bonne réponse.",
+    stagesPageDescription2:
+      "Une bonne réponse vaut 1 point. Il faut au moins 80 % (32/40) pour valider une section et débloquer la suivante. Les stages s'ouvrent dans l'ordre : seul le premier stage est actif pour un nouveau joueur. Vous ne voyez que les stages chargés en {localeName} ; les autres langues restent invisibles.",
+    noStagesMessage:
+      "Aucun stage n'a encore été chargé dans votre langue ({localeName}). L'administrateur doit publier un parcours dans cette langue pour que vous puissiez jouer.",
+    statusLocked: "Verrouillé",
+    statusUnlocked: "Disponible",
+    statusCompleted: "Terminé",
+    playButton: "Jouer",
+    reviewButton: "Revoir",
+    lockedMessage: "Terminez le stage précédent pour débloquer celui-ci.",
+    progressLabel: "Progression : {completed}/{total} sections",
   },
   en: {
     pageTitle: "Player Area",
@@ -61,6 +88,21 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     navHome: "Home",
     navStages: "Stages",
     navAccount: "My Account",
+    stagesPageTitle: "Stages Home",
+    stagesPageSubtitle: "The game, in a few rules",
+    stagesPageDescription1:
+      "1000 QBM+ is a single-choice question journey. Each stage contains at least five sections. Each section is a set of 40 questions, with one correct answer.",
+    stagesPageDescription2:
+      "A correct answer is worth 1 point. You need at least 80% (32/40) to validate a section and unlock the next one. Stages open in order: only the first stage is active for a new player. You only see stages loaded in {localeName}; other languages remain invisible.",
+    noStagesMessage:
+      "No stages have been loaded in your language ({localeName}) yet. The administrator must publish a course in this language for you to play.",
+    statusLocked: "Locked",
+    statusUnlocked: "Available",
+    statusCompleted: "Completed",
+    playButton: "Play",
+    reviewButton: "Review",
+    lockedMessage: "Complete the previous stage to unlock this one.",
+    progressLabel: "Progress: {completed}/{total} sections",
   },
   es: {
     pageTitle: "Área de Jugador",
@@ -83,6 +125,21 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     navHome: "Inicio",
     navStages: "Etapas",
     navAccount: "Mi Cuenta",
+    stagesPageTitle: "Inicio de etapas",
+    stagesPageSubtitle: "El juego, en pocas reglas",
+    stagesPageDescription1:
+      "1000 QBM+ es un recorrido de preguntas de opción única. Cada etapa contiene al menos cinco secciones. Cada sección es un conjunto de 40 preguntas, con una sola respuesta correcta.",
+    stagesPageDescription2:
+      "Una respuesta correcta vale 1 punto. Necesitas al menos el 80% (32/40) para validar una sección y desbloquear la siguiente. Las etapas se abren en orden: solo la primera etapa está activa para un nuevo jugador. Solo ves las etapas cargadas en {localeName}; otros idiomas permanecen invisibles.",
+    noStagesMessage:
+      "Aún no se han cargado etapas en su idioma ({localeName}). El administrador debe publicar un curso en este idioma para que pueda jugar.",
+    statusLocked: "Bloqueado",
+    statusUnlocked: "Disponible",
+    statusCompleted: "Completado",
+    playButton: "Jugar",
+    reviewButton: "Revisar",
+    lockedMessage: "Complete la etapa anterior para desbloquear esta.",
+    progressLabel: "Progreso: {completed}/{total} secciones",
   },
   de: {
     pageTitle: "Spielerbereich",
@@ -105,6 +162,21 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     navHome: "Startseite",
     navStages: "Stufen",
     navAccount: "Mein Konto",
+    stagesPageTitle: "Stufen-Startseite",
+    stagesPageSubtitle: "Das Spiel, in wenigen Regeln",
+    stagesPageDescription1:
+      "1000 QBM+ ist eine Einzelwahl-Fragenreise. Jede Stufe enthält mindestens fünf Abschnitte. Jeder Abschnitt ist ein Satz von 40 Fragen mit einer richtigen Antwort.",
+    stagesPageDescription2:
+      "Eine richtige Antwort ist 1 Punkt wert. Sie benötigen mindestens 80% (32/40), um einen Abschnitt zu validieren und den nächsten freizuschalten. Stufen öffnen sich in der Reihenfolge: Nur die erste Stufe ist für einen neuen Spieler aktiv. Sie sehen nur Stufen, die in {localeName} geladen sind; andere Sprachen bleiben unsichtbar.",
+    noStagesMessage:
+      "Es wurden noch keine Stufen in Ihrer Sprache ({localeName}) geladen. Der Administrator muss einen Kurs in dieser Sprache veröffentlichen, damit Sie spielen können.",
+    statusLocked: "Gesperrt",
+    statusUnlocked: "Verfügbar",
+    statusCompleted: "Abgeschlossen",
+    playButton: "Spielen",
+    reviewButton: "Überprüfen",
+    lockedMessage: "Schließen Sie die vorherige Stufe ab, um diese freizuschalten.",
+    progressLabel: "Fortschritt: {completed}/{total} Abschnitte",
   },
   pt: {
     pageTitle: "Área do Jogador",
@@ -127,6 +199,21 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     navHome: "Início",
     navStages: "Etapas",
     navAccount: "Minha Conta",
+    stagesPageTitle: "Início das etapas",
+    stagesPageSubtitle: "O jogo, em poucas regras",
+    stagesPageDescription1:
+      "1000 QBM+ é uma jornada de perguntas de escolha única. Cada etapa contém pelo menos cinco seções. Cada seção é um conjunto de 40 perguntas, com uma única resposta correta.",
+    stagesPageDescription2:
+      "Uma resposta correta vale 1 ponto. Você precisa de pelo menos 80% (32/40) para validar uma seção e desbloquear a próxima. As etapas abrem em ordem: apenas a primeira etapa está ativa para um novo jogador. Você só vê etapas carregadas em {localeName}; outros idiomas permanecem invisíveis.",
+    noStagesMessage:
+      "Nenhuma etapa foi carregada em seu idioma ({localeName}) ainda. O administrador deve publicar um curso neste idioma para que você possa jogar.",
+    statusLocked: "Bloqueado",
+    statusUnlocked: "Disponível",
+    statusCompleted: "Concluído",
+    playButton: "Jogar",
+    reviewButton: "Revisar",
+    lockedMessage: "Complete a etapa anterior para desbloquear esta.",
+    progressLabel: "Progresso: {completed}/{total} seções",
   },
 };
 

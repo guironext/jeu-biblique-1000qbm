@@ -9,6 +9,7 @@ function isPlayerPath(path: string) {
   return (
     path.startsWith("/onboarding") ||
     path.startsWith("/stages") ||
+    path.startsWith("/joueur") ||
     path.startsWith("/compte")
   );
 }
@@ -23,7 +24,7 @@ export default async function proxy(req: NextRequest) {
   }
 
   if (path.startsWith("/admin") && session?.role && session.role !== "ADMIN") {
-    return NextResponse.redirect(new URL("/stages", req.nextUrl));
+    return NextResponse.redirect(new URL("/joueur", req.nextUrl));
   }
 
   if (isAuthPage(path) && session?.userId) {
@@ -31,7 +32,7 @@ export default async function proxy(req: NextRequest) {
       session.role === "ADMIN"
         ? "/admin"
         : session.onboarded
-          ? "/stages"
+          ? "/joueur"
           : "/onboarding";
     return NextResponse.redirect(new URL(destination, req.nextUrl));
   }
@@ -58,10 +59,13 @@ export default async function proxy(req: NextRequest) {
   }
 
   if (path.startsWith("/onboarding") && session?.onboarded) {
-    return NextResponse.redirect(new URL("/stages", req.nextUrl));
+    return NextResponse.redirect(new URL("/joueur", req.nextUrl));
   }
 
-  if (path.startsWith("/stages") && session?.role === "ADMIN") {
+  if (
+    (path.startsWith("/stages") || path.startsWith("/joueur")) &&
+    session?.role === "ADMIN"
+  ) {
     return NextResponse.redirect(new URL("/admin", req.nextUrl));
   }
 

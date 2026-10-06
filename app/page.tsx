@@ -14,7 +14,7 @@ export default async function Home() {
     : session.role === "ADMIN"
       ? "/admin"
       : session.onboarded
-        ? "/stages"
+        ? "/joueur"
         : "/onboarding";
 
   return (

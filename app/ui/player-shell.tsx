@@ -22,7 +22,7 @@ export function PlayerShell({
         variant="player"
         links={[
           { href: "/joueur", label: t("navHome") },
-          { href: "/stages", label: t("navStages") },
+          { href: "/joueur/stages", label: t("navStages") },
           { href: "/compte", label: t("navAccount") },
         ]}
       />
