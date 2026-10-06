@@ -103,7 +103,6 @@ export function StageCatalog({
           {stages.map((stage) => {
             const isLocked = stage.status === "LOCKED";
             const isCompleted = stage.status === "COMPLETED";
-            const isUnlocked = stage.status === "UNLOCKED";
 
             return (
               <motion.div

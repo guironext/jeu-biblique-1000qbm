@@ -28,6 +28,20 @@ type JoueurTranslations = {
   reviewButton: string;
   lockedMessage: string;
   progressLabel: string;
+  quizQuestionProgress: string;
+  quizSubmit: string;
+  quizNext: string;
+  quizCorrect: string;
+  quizIncorrect: string;
+  quizNoQuestions: string;
+  successTitle: string;
+  successMessage: string;
+  successButton: string;
+  successScore: string;
+  failureTitle: string;
+  failureMessage: string;
+  failureButton: string;
+  failureScore: string;
 };
 
 const translations: Record<LocaleCode, JoueurTranslations> = {
@@ -67,6 +81,20 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     reviewButton: "Revoir",
     lockedMessage: "Terminez le stage précédent pour débloquer celui-ci.",
     progressLabel: "Progression : {completed}/{total} sections",
+    quizQuestionProgress: "Question {current}/{total}",
+    quizSubmit: "Valider",
+    quizNext: "Question suivante",
+    quizCorrect: "Correct !",
+    quizIncorrect: "Incorrect",
+    quizNoQuestions: "Cette section ne contient aucune question pour le moment.",
+    successTitle: "Bravo !",
+    successMessage: "Vous avez réussi cette section avec brio. Continuez comme ça !",
+    successButton: "Félicitations Continue Ainsi",
+    successScore: "Votre score : {score}/{total} ({percent}%)",
+    failureTitle: "Pas encore cette fois",
+    failureMessage: "Vous n'avez pas atteint le seuil de 80%. Essayez à nouveau !",
+    failureButton: "Reprendre la Partie",
+    failureScore: "Votre score : {score}/{total} ({percent}%)",
   },
   en: {
     pageTitle: "Player Area",
@@ -103,6 +131,20 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     reviewButton: "Review",
     lockedMessage: "Complete the previous stage to unlock this one.",
     progressLabel: "Progress: {completed}/{total} sections",
+    quizQuestionProgress: "Question {current}/{total}",
+    quizSubmit: "Submit",
+    quizNext: "Next question",
+    quizCorrect: "Correct!",
+    quizIncorrect: "Incorrect",
+    quizNoQuestions: "This section has no questions at the moment.",
+    successTitle: "Well done!",
+    successMessage: "You passed this section with flying colors. Keep it up!",
+    successButton: "Continue",
+    successScore: "Your score: {score}/{total} ({percent}%)",
+    failureTitle: "Not quite there",
+    failureMessage: "You didn't reach the 80% threshold. Try again!",
+    failureButton: "Try Again",
+    failureScore: "Your score: {score}/{total} ({percent}%)",
   },
   es: {
     pageTitle: "Área de Jugador",
@@ -140,6 +182,20 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     reviewButton: "Revisar",
     lockedMessage: "Complete la etapa anterior para desbloquear esta.",
     progressLabel: "Progreso: {completed}/{total} secciones",
+    quizQuestionProgress: "Pregunta {current}/{total}",
+    quizSubmit: "Enviar",
+    quizNext: "Siguiente pregunta",
+    quizCorrect: "¡Correcto!",
+    quizIncorrect: "Incorrecto",
+    quizNoQuestions: "Esta sección no tiene preguntas en este momento.",
+    successTitle: "¡Muy bien!",
+    successMessage: "Pasaste esta sección con gran éxito. ¡Sigue así!",
+    successButton: "Continuar",
+    successScore: "Tu puntuación: {score}/{total} ({percent}%)",
+    failureTitle: "Aún no",
+    failureMessage: "No alcanzaste el umbral del 80%. ¡Inténtalo de nuevo!",
+    failureButton: "Intentar de nuevo",
+    failureScore: "Tu puntuación: {score}/{total} ({percent}%)",
   },
   de: {
     pageTitle: "Spielerbereich",
@@ -177,6 +233,20 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     reviewButton: "Überprüfen",
     lockedMessage: "Schließen Sie die vorherige Stufe ab, um diese freizuschalten.",
     progressLabel: "Fortschritt: {completed}/{total} Abschnitte",
+    quizQuestionProgress: "Frage {current}/{total}",
+    quizSubmit: "Absenden",
+    quizNext: "Nächste Frage",
+    quizCorrect: "Richtig!",
+    quizIncorrect: "Falsch",
+    quizNoQuestions: "Dieser Abschnitt hat derzeit keine Fragen.",
+    successTitle: "Gut gemacht!",
+    successMessage: "Sie haben diesen Abschnitt mit Bravour bestanden. Weiter so!",
+    successButton: "Weiter",
+    successScore: "Ihre Punktzahl: {score}/{total} ({percent}%)",
+    failureTitle: "Noch nicht ganz",
+    failureMessage: "Sie haben die 80%-Schwelle nicht erreicht. Versuchen Sie es erneut!",
+    failureButton: "Erneut versuchen",
+    failureScore: "Ihre Punktzahl: {score}/{total} ({percent}%)",
   },
   pt: {
     pageTitle: "Área do Jogador",
@@ -214,6 +284,20 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     reviewButton: "Revisar",
     lockedMessage: "Complete a etapa anterior para desbloquear esta.",
     progressLabel: "Progresso: {completed}/{total} seções",
+    quizQuestionProgress: "Pergunta {current}/{total}",
+    quizSubmit: "Enviar",
+    quizNext: "Próxima pergunta",
+    quizCorrect: "Correto!",
+    quizIncorrect: "Incorreto",
+    quizNoQuestions: "Esta seção não tem perguntas no momento.",
+    successTitle: "Muito bem!",
+    successMessage: "Você passou nesta seção com louvor. Continue assim!",
+    successButton: "Continuar",
+    successScore: "Sua pontuação: {score}/{total} ({percent}%)",
+    failureTitle: "Ainda não",
+    failureMessage: "Você não atingiu o limite de 80%. Tente novamente!",
+    failureButton: "Tentar novamente",
+    failureScore: "Sua pontuação: {score}/{total} ({percent}%)",
   },
 };
 
