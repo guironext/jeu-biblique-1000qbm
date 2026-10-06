@@ -116,7 +116,7 @@ export function StageCatalog({
                 </p>
                 {stage.isNext ? (
                   <MotionLink
-                    href={`/stages/${stage.id}`}
+                    href={`/joueur/stages/${stage.id}`}
                     whileHover={hoverLift}
                     whileTap={tap}
                     className="mt-5 inline-flex h-11 items-center justify-center rounded-lg bg-olive-800 px-5 text-sm font-semibold text-white hover:bg-olive-900"
@@ -125,7 +125,7 @@ export function StageCatalog({
                   </MotionLink>
                 ) : playable ? (
                   <MotionLink
-                    href={`/stages/${stage.id}`}
+                    href={`/joueur/stages/${stage.id}`}
                     whileHover={hoverLift}
                     whileTap={tap}
                     className="mt-5 inline-flex h-11 items-center justify-center rounded-lg border border-olive-800 px-5 text-sm font-semibold text-olive-900 hover:bg-olive-50"

@@ -25,8 +25,11 @@ function isNavActive(pathname: string, href: string) {
   if (href === "/admin/questions") {
     return pathname.startsWith("/admin/questions");
   }
-  if (href === "/stages") {
-    return pathname.startsWith("/stages");
+  if (href === "/joueur") {
+    return pathname === "/joueur";
+  }
+  if (href === "/joueur/stages") {
+    return pathname.startsWith("/joueur/stages");
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -46,7 +49,7 @@ export function SessionChrome({
 }) {
   const pathname = usePathname();
   const isAdmin = variant === "admin";
-  const homeHref = isAdmin ? "/admin" : "/stages";
+  const homeHref = isAdmin ? "/admin" : "/joueur";
 
   return (
     <motion.header

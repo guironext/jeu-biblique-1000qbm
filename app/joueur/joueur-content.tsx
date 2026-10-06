@@ -95,7 +95,7 @@ export function JoueurContent({
       {/* CTA Button */}
       <motion.div variants={fadeUp} className="mt-6 flex w-full max-w-prose sm:mt-7">
         <MotionLink
-          href="/joueur/stages/"
+          href="/joueur/stages"
           className="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-olive-600 to-olive-400 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:from-olive-700 hover:to-olive-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600 sm:w-auto sm:px-5 sm:py-4 sm:text-base"
           whileHover={hoverLift}
           whileTap={tap}
@@ -104,61 +104,7 @@ export function JoueurContent({
         </MotionLink>
       </motion.div>
 
-      {/* Action Cards */}
-      <motion.div
-        className="mt-10 grid gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6"
-        variants={stagger}
-      >
-        <motion.div variants={fadeUp}>
-          <MotionLink
-            href="/stages"
-            className="group relative flex h-full min-h-[8rem] flex-col overflow-hidden rounded-xl border border-stone-200 bg-white p-6 shadow-sm ring-olive-300 transition-all hover:border-olive-300 hover:shadow-lg focus:outline-none focus:ring-2 sm:p-7"
-            whileHover={hoverLift}
-            whileTap={tap}
-          >
-            <div className="absolute right-4 top-4 text-3xl opacity-20 transition-all group-hover:scale-110 group-hover:opacity-30 sm:right-5 sm:top-5 sm:text-4xl">
-              🎯
-            </div>
-            <h2 className="relative text-xl font-bold text-stone-900 transition-colors group-hover:text-olive-800 sm:text-2xl">
-              {playStagesTitle}
-            </h2>
-            <p className="relative mt-3 text-sm leading-relaxed text-stone-600 sm:text-[0.9375rem]">
-              {playStagesDescription}
-            </p>
-            <div className="relative mt-auto flex items-center gap-2 pt-4 text-sm font-semibold text-olive-700 transition-colors group-hover:text-olive-800">
-              <span>Commencer</span>
-              <span className="transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </div>
-          </MotionLink>
-        </motion.div>
-
-        <motion.div variants={fadeUp}>
-          <MotionLink
-            href="/compte"
-            className="group relative flex h-full min-h-[8rem] flex-col overflow-hidden rounded-xl border border-stone-200 bg-white p-6 shadow-sm ring-olive-300 transition-all hover:border-olive-300 hover:shadow-lg focus:outline-none focus:ring-2 sm:p-7"
-            whileHover={hoverLift}
-            whileTap={tap}
-          >
-            <div className="absolute right-4 top-4 text-3xl opacity-20 transition-all group-hover:scale-110 group-hover:opacity-30 sm:right-5 sm:top-5 sm:text-4xl">
-              👤
-            </div>
-            <h2 className="relative text-xl font-bold text-stone-900 transition-colors group-hover:text-olive-800 sm:text-2xl">
-              {myAccountTitle}
-            </h2>
-            <p className="relative mt-3 text-sm leading-relaxed text-stone-600 sm:text-[0.9375rem]">
-              {myAccountDescription}
-            </p>
-            <div className="relative mt-auto flex items-center gap-2 pt-4 text-sm font-semibold text-olive-700 transition-colors group-hover:text-olive-800">
-              <span>Voir</span>
-              <span className="transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </div>
-          </MotionLink>
-        </motion.div>
-      </motion.div>
+      
     </motion.main>
   );
 }

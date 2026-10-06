@@ -36,7 +36,7 @@ export function SectionList({
     >
       <motion.div variants={fadeUp}>
         <MotionLink
-          href="/stages"
+          href="/joueur/stages"
           whileHover={{ x: -2 }}
           className="text-sm font-medium text-olive-800 underline-offset-4 hover:underline"
         >
