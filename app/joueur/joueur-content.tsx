@@ -16,10 +16,6 @@ type JoueurContentProps = {
   heroParagraph: string;
   challengeLine: string;
   ctaStart: string;
-  playStagesTitle: string;
-  playStagesDescription: string;
-  myAccountTitle: string;
-  myAccountDescription: string;
   headingClassName: string;
 };
 
@@ -30,10 +26,6 @@ export function JoueurContent({
   heroParagraph,
   challengeLine,
   ctaStart,
-  playStagesTitle,
-  playStagesDescription,
-  myAccountTitle,
-  myAccountDescription,
   headingClassName,
 }: JoueurContentProps) {
   return (
