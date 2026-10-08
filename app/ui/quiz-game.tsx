@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useCallback } from "react";
 import { submitAnswer, finishQuiz } from "@/app/actions/quiz";
 import { MotionLink, fadeUp, hoverLift, stagger, tap } from "@/app/ui/page-motion";
 
@@ -15,6 +15,7 @@ type QuizTranslations = {
   questionProgress: string;
   submit: string;
   next: string;
+  skip: string;
   correct: string;
   incorrect: string;
 };
@@ -38,36 +39,51 @@ export function QuizGame({
 }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
+  const [correctAnswerId, setCorrectAnswerId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null);
-  const [score, setScore] = useState(0);
+  const [answerPairs, setAnswerPairs] = useState<Array<{ questionId: string; answerId: string }>>([]);
   const [isPending, startTransition] = useTransition();
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const hasAnswered = feedback !== null;
+  const progress = ((currentQuestionIndex + (hasAnswered ? 1 : 0)) / questions.length) * 100;
 
-  const handleSubmit = () => {
-    if (!selectedAnswerId) return;
-
-    startTransition(async () => {
-      const result = await submitAnswer(currentQuestion.id, selectedAnswerId);
-      setFeedback(result.correct ? "correct" : "incorrect");
-      if (result.correct) {
-        setScore(score + 1);
-      }
-    });
-  };
-
-  const handleNext = () => {
+  const handleAdvance = useCallback(() => {
     if (isLastQuestion) {
       startTransition(async () => {
-        await finishQuiz(stageId, sectionId, score, questions.length);
+        await finishQuiz(stageId, sectionId, answerPairs);
       });
     } else {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswerId(null);
+      setCorrectAnswerId(null);
       setFeedback(null);
     }
+  }, [isLastQuestion, stageId, sectionId, answerPairs]);
+
+  useEffect(() => {
+    if (hasAnswered) {
+      const timer = setTimeout(() => {
+        handleAdvance();
+      }, 1400);
+      return () => clearTimeout(timer);
+    }
+  }, [hasAnswered, handleAdvance]);
+
+  const handleAnswerClick = (answerId: string) => {
+    if (hasAnswered || isPending) return;
+
+    setSelectedAnswerId(answerId);
+
+    startTransition(async () => {
+      const result = await submitAnswer(sectionId, currentQuestion.id, answerId);
+      setFeedback(result.correct ? "correct" : "incorrect");
+      if (!result.correct && result.correctAnswerId) {
+        setCorrectAnswerId(result.correctAnswerId);
+      }
+      setAnswerPairs([...answerPairs, { questionId: currentQuestion.id, answerId }]);
+    });
   };
 
   const progressText = translations.questionProgress
@@ -100,6 +116,17 @@ export function QuizGame({
         </h1>
       </motion.div>
 
+      <motion.div variants={fadeUp} className="mt-4">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-stone-200">
+          <motion.div
+            className="h-full bg-gradient-to-r from-olive-600 to-olive-400"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+      </motion.div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={currentQuestion.id}
@@ -117,28 +144,35 @@ export function QuizGame({
             <div className="mt-6 space-y-3">
               {currentQuestion.answers.map((answer) => {
                 const isSelected = selectedAnswerId === answer.id;
-                const showFeedback = hasAnswered && isSelected;
+                const isCorrect = correctAnswerId === answer.id || (isSelected && feedback === "correct");
+                const isWrong = isSelected && feedback === "incorrect";
+                const showAsCorrect = hasAnswered && isCorrect;
+                const showAsWrong = hasAnswered && isWrong;
 
                 return (
                   <button
                     key={answer.id}
-                    onClick={() => {
-                      if (!hasAnswered) {
-                        setSelectedAnswerId(answer.id);
-                      }
-                    }}
+                    onClick={() => handleAnswerClick(answer.id)}
                     disabled={hasAnswered || isPending}
                     className={`w-full rounded-lg border-2 px-4 py-3 text-left text-sm font-medium transition-all sm:text-base ${
-                      showFeedback && feedback === "correct"
+                      showAsCorrect
                         ? "border-green-500 bg-green-50 text-green-900"
-                        : showFeedback && feedback === "incorrect"
+                        : showAsWrong
                           ? "border-red-500 bg-red-50 text-red-900"
-                          : isSelected
+                          : isSelected && !hasAnswered
                             ? "border-olive-600 bg-olive-50 text-olive-900"
                             : "border-stone-300 bg-white text-stone-700 hover:border-olive-400 hover:bg-olive-50/50"
-                    } ${hasAnswered || isPending ? "cursor-not-allowed opacity-75" : "cursor-pointer"}`}
+                    } ${hasAnswered || isPending ? "cursor-not-allowed" : "cursor-pointer"} ${!hasAnswered && !isPending ? "active:scale-[0.98]" : ""}`}
                   >
-                    {answer.label}
+                    <span className="flex items-center justify-between">
+                      <span>{answer.label}</span>
+                      {showAsCorrect && (
+                        <span className="text-xl">✓</span>
+                      )}
+                      {showAsWrong && (
+                        <span className="text-xl">✗</span>
+                      )}
+                    </span>
                   </button>
                 );
               })}
@@ -148,7 +182,7 @@ export function QuizGame({
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className={`mt-4 rounded-lg px-4 py-3 text-center text-sm font-semibold ${
+                className={`mt-4 rounded-lg px-4 py-3 text-center text-base font-bold ${
                   feedback === "correct"
                     ? "bg-green-100 text-green-900"
                     : "bg-red-100 text-red-900"
@@ -159,29 +193,23 @@ export function QuizGame({
             )}
           </div>
 
-          <div className="mt-6">
-            {!hasAnswered ? (
+          {hasAnswered && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6"
+            >
               <motion.button
-                onClick={handleSubmit}
-                disabled={!selectedAnswerId || isPending}
-                whileHover={selectedAnswerId && !isPending ? hoverLift : undefined}
-                whileTap={selectedAnswerId && !isPending ? tap : undefined}
-                className="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-olive-600 to-olive-400 px-6 py-3 text-base font-semibold text-white shadow-sm hover:from-olive-700 hover:to-olive-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isPending ? "..." : translations.submit}
-              </motion.button>
-            ) : (
-              <motion.button
-                onClick={handleNext}
+                onClick={handleAdvance}
                 disabled={isPending}
                 whileHover={!isPending ? hoverLift : undefined}
                 whileTap={!isPending ? tap : undefined}
-                className="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-olive-600 to-olive-400 px-6 py-3 text-base font-semibold text-white shadow-sm hover:from-olive-700 hover:to-olive-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex w-full items-center justify-center rounded-lg border-2 border-olive-600 bg-white px-6 py-3 text-base font-semibold text-olive-900 hover:bg-olive-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {isPending ? "..." : isLastQuestion ? "Terminer" : translations.next}
+                {isPending ? "..." : translations.skip}
               </motion.button>
-            )}
-          </div>
+            </motion.div>
+          )}
         </motion.div>
       </AnimatePresence>
     </motion.main>
