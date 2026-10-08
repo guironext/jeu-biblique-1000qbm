@@ -103,6 +103,7 @@ export default async function PlayPage({
       stageId={stageId}
       sectionId={sectionId}
       sectionTitle={section.title}
+      sectionImageUrl={section.imageUrl}
       questions={quizQuestions}
       headingClassName={sourceSerif.className}
       backHref={`/joueur/stages/${stageId}`}
