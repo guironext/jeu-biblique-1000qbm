@@ -108,9 +108,6 @@ export default async function PlayPage({
       backHref={`/joueur/stages/${stageId}`}
       translations={{
         questionProgress: t.quizQuestionProgress,
-        submit: t.quizSubmit,
-        next: t.quizNext,
-        skip: t.quizSkip,
         correct: t.quizCorrect,
         incorrect: t.quizIncorrect,
       }}

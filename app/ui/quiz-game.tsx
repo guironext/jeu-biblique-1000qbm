@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useTransition, useEffect, useCallback } from "react";
 import { submitAnswer, finishQuiz } from "@/app/actions/quiz";
-import { MotionLink, fadeUp, hoverLift, stagger, tap } from "@/app/ui/page-motion";
+import { MotionLink, fadeUp, stagger } from "@/app/ui/page-motion";
 
 type QuizQuestion = {
   id: string;
@@ -13,9 +13,6 @@ type QuizQuestion = {
 
 type QuizTranslations = {
   questionProgress: string;
-  submit: string;
-  next: string;
-  skip: string;
   correct: string;
   incorrect: string;
 };
@@ -64,12 +61,13 @@ export function QuizGame({
 
   useEffect(() => {
     if (hasAnswered) {
+      const delay = feedback === "correct" ? 1200 : 1500;
       const timer = setTimeout(() => {
         handleAdvance();
-      }, 1400);
+      }, delay);
       return () => clearTimeout(timer);
     }
-  }, [hasAnswered, handleAdvance]);
+  }, [hasAnswered, feedback, handleAdvance]);
 
   const handleAnswerClick = (answerId: string) => {
     if (hasAnswered || isPending) return;
@@ -192,24 +190,6 @@ export function QuizGame({
               </motion.div>
             )}
           </div>
-
-          {hasAnswered && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6"
-            >
-              <motion.button
-                onClick={handleAdvance}
-                disabled={isPending}
-                whileHover={!isPending ? hoverLift : undefined}
-                whileTap={!isPending ? tap : undefined}
-                className="inline-flex w-full items-center justify-center rounded-lg border-2 border-olive-600 bg-white px-6 py-3 text-base font-semibold text-olive-900 hover:bg-olive-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-600 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isPending ? "..." : translations.skip}
-              </motion.button>
-            </motion.div>
-          )}
         </motion.div>
       </AnimatePresence>
     </motion.main>
