@@ -68,7 +68,10 @@ export default async function PlayPage({
   }
 
   const questionIds = questionRows.map((q) => q.id);
-  const answersByQuestion = new Map<string, Array<{ id: string; questionId: string; label: string; orderIndex: number }>>();
+  const answersByQuestion = new Map<
+    string,
+    Array<{ id: string; questionId: string; label: string; orderIndex: number }>
+  >();
 
   for (const questionId of questionIds) {
     const qAnswers = await db
@@ -105,8 +108,6 @@ export default async function PlayPage({
       backHref={`/joueur/stages/${stageId}`}
       translations={{
         questionProgress: t.quizQuestionProgress,
-        submit: t.quizSubmit,
-        next: t.quizNext,
         correct: t.quizCorrect,
         incorrect: t.quizIncorrect,
       }}

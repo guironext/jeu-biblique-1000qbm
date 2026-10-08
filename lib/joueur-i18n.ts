@@ -31,6 +31,7 @@ type JoueurTranslations = {
   quizQuestionProgress: string;
   quizSubmit: string;
   quizNext: string;
+  quizSkip: string;
   quizCorrect: string;
   quizIncorrect: string;
   quizNoQuestions: string;
@@ -84,8 +85,9 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     quizQuestionProgress: "Question {current}/{total}",
     quizSubmit: "Valider",
     quizNext: "Question suivante",
+    quizSkip: "Suivant",
     quizCorrect: "Correct !",
-    quizIncorrect: "Incorrect",
+    quizIncorrect: "Faux !",
     quizNoQuestions: "Cette section ne contient aucune question pour le moment.",
     successTitle: "Bravo !",
     successMessage: "Vous avez réussi cette section avec brio. Continuez comme ça !",
@@ -134,8 +136,9 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     quizQuestionProgress: "Question {current}/{total}",
     quizSubmit: "Submit",
     quizNext: "Next question",
+    quizSkip: "Next",
     quizCorrect: "Correct!",
-    quizIncorrect: "Incorrect",
+    quizIncorrect: "Wrong!",
     quizNoQuestions: "This section has no questions at the moment.",
     successTitle: "Well done!",
     successMessage: "You passed this section with flying colors. Keep it up!",
@@ -185,8 +188,9 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     quizQuestionProgress: "Pregunta {current}/{total}",
     quizSubmit: "Enviar",
     quizNext: "Siguiente pregunta",
+    quizSkip: "Siguiente",
     quizCorrect: "¡Correcto!",
-    quizIncorrect: "Incorrecto",
+    quizIncorrect: "¡Incorrecto!",
     quizNoQuestions: "Esta sección no tiene preguntas en este momento.",
     successTitle: "¡Muy bien!",
     successMessage: "Pasaste esta sección con gran éxito. ¡Sigue así!",
@@ -236,8 +240,9 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     quizQuestionProgress: "Frage {current}/{total}",
     quizSubmit: "Absenden",
     quizNext: "Nächste Frage",
+    quizSkip: "Weiter",
     quizCorrect: "Richtig!",
-    quizIncorrect: "Falsch",
+    quizIncorrect: "Falsch!",
     quizNoQuestions: "Dieser Abschnitt hat derzeit keine Fragen.",
     successTitle: "Gut gemacht!",
     successMessage: "Sie haben diesen Abschnitt mit Bravour bestanden. Weiter so!",
@@ -287,8 +292,9 @@ const translations: Record<LocaleCode, JoueurTranslations> = {
     quizQuestionProgress: "Pergunta {current}/{total}",
     quizSubmit: "Enviar",
     quizNext: "Próxima pergunta",
+    quizSkip: "Próxima",
     quizCorrect: "Correto!",
-    quizIncorrect: "Incorreto",
+    quizIncorrect: "Errado!",
     quizNoQuestions: "Esta seção não tem perguntas no momento.",
     successTitle: "Muito bem!",
     successMessage: "Você passou nesta seção com louvor. Continue assim!",

@@ -1,6 +1,5 @@
 import { Source_Serif_4 } from "next/font/google";
 import { requireOnboardedPlayer } from "@/lib/dal";
-import { localeLabel } from "@/lib/catalog";
 import { translateJoueur } from "@/lib/joueur-i18n";
 import { JoueurContent } from "./joueur-content";
 
