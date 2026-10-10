@@ -12,6 +12,7 @@ import {
   sections,
 } from "@/lib/db/schema";
 import { getJoueurTranslations } from "@/lib/joueur-i18n";
+import { ensureStageSectionProgress } from "@/lib/player-progress";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -38,6 +39,8 @@ export default async function PlayPage({
   if (!section || section.stageId !== stage.id) {
     redirect("/joueur/stages");
   }
+
+  await ensureStageSectionProgress(user.id, stage.id);
 
   const progress = await db.query.sectionProgress.findFirst({
     where: and(

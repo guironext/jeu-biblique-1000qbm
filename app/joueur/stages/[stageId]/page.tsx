@@ -6,6 +6,7 @@ import { getPublishedStageInLocale } from "@/lib/catalog";
 import { requireOnboardedPlayer } from "@/lib/dal";
 import { db } from "@/lib/db";
 import { sectionProgress, sections, stageProgress } from "@/lib/db/schema";
+import { ensureStageSectionProgress } from "@/lib/player-progress";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -36,6 +37,8 @@ export default async function StageSectionsPage({
   if (!progress || progress.status === "LOCKED") {
     redirect("/joueur/stages");
   }
+
+  await ensureStageSectionProgress(user.id, stage.id);
 
   const stageSections = await db.query.sections.findMany({
     where: and(eq(sections.stageId, stage.id), eq(sections.published, true)),

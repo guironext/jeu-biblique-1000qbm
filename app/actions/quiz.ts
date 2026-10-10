@@ -13,6 +13,7 @@ import {
 } from "@/lib/db/schema";
 import { requireOnboardedPlayer } from "@/lib/dal";
 import { redirect } from "next/navigation";
+import { ensureStageSectionProgress } from "@/lib/player-progress";
 
 export async function submitAnswer(
   sectionId: string,
@@ -255,7 +256,12 @@ export async function finishQuiz(
             ),
           });
 
-          if (nextStageProgress?.status === "LOCKED") {
+          if (!nextStageProgress) {
+            await db
+              .insert(stageProgress)
+              .values({ userId: user.id, stageId: nextStage.id, status: "UNLOCKED" })
+              .onConflictDoNothing();
+          } else if (nextStageProgress.status === "LOCKED") {
             await db
               .update(stageProgress)
               .set({ status: "UNLOCKED" })
@@ -266,6 +272,8 @@ export async function finishQuiz(
                 ),
               );
           }
+
+          await ensureStageSectionProgress(user.id, nextStage.id);
         }
       }
     }

@@ -4,7 +4,10 @@ import { localeLabel } from "@/lib/catalog";
 import { requireOnboardedPlayer } from "@/lib/dal";
 import { db } from "@/lib/db";
 import { sectionProgress, sections, stageProgress } from "@/lib/db/schema";
-import { ensurePlayerCatalogProgress } from "@/lib/player-progress";
+import {
+  ensureAllOpenStagesSectionProgress,
+  ensurePlayerCatalogProgress,
+} from "@/lib/player-progress";
 import { and, eq } from "drizzle-orm";
 import { getJoueurTranslations } from "@/lib/joueur-i18n";
 
@@ -86,6 +89,7 @@ export default async function StagesPage() {
   const catalog = await ensurePlayerCatalogProgress(user.id, profile.locale);
 
   await unlockNextStageIfNeeded(user.id, catalog);
+  await ensureAllOpenStagesSectionProgress(user.id);
 
   const progressRows = await db.query.stageProgress.findMany({
     where: eq(stageProgress.userId, user.id),
